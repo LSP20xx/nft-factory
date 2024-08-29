@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import "openzeppelin-contracts/contracts/token/ERC721/ERC721.sol";
-import "openzeppelin-contracts/contracts/access/Ownable.sol";
+import "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol";
+import "lib/openzeppelin-contracts/contracts/access/Ownable.sol";
 
 contract CustomNFT is ERC721, Ownable {
     uint256 public tokenCounter;
@@ -12,8 +12,7 @@ contract CustomNFT is ERC721, Ownable {
         string memory name,
         string memory symbol,
         address owner
-    ) ERC721(name, symbol) {
-        _transferOwnership(owner);
+    ) ERC721(name, symbol) Ownable(owner) {
         tokenCounter = 0;
     }
 
@@ -36,7 +35,7 @@ contract CustomNFT is ERC721, Ownable {
         uint256 tokenId
     ) public view override returns (string memory) {
         require(
-            _exists(tokenId),
+            ownerOf(tokenId) != address(0),
             "ERC721Metadata: URI query for nonexistent token"
         );
         return _tokenURIs[tokenId];

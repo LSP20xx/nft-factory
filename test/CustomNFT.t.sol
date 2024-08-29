@@ -6,6 +6,7 @@ import "../src/CustomNFT.sol";
 
 contract CustomNFTTest is Test {
     CustomNFT public customNFT;
+    address public testAddress = address(0x1234);
 
     function setUp() public {
         customNFT = new CustomNFT("ArtCollective", "ARTC", address(this));
@@ -13,7 +14,7 @@ contract CustomNFTTest is Test {
 
     function testMintNFT() public {
         uint256 tokenId = customNFT.mintNFT(
-            address(this),
+            testAddress,
             "https://example.com/token"
         );
         assertEq(tokenId, 0);

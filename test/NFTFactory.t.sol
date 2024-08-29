@@ -2,20 +2,27 @@
 pragma solidity ^0.8.19;
 
 import "forge-std/Test.sol";
-import "../src/NFTFactory.sol";
+import "../src/CustomNFT.sol";
 
-contract NFTFactoryTest is Test {
-    NFTFactory public factory;
+contract CustomNFTTest is Test {
+    CustomNFT public customNFT;
+    address public testAddress = address(0x1234);
 
     function setUp() public {
-        factory = new NFTFactory();
+        customNFT = new CustomNFT("ArtCollective", "ARTC", address(this));
     }
 
-    function testCreateNFTCollection() public {
-        address newCollection = factory.createNFTCollection(
-            "ArtCollective",
-            "ARTC"
+    function testMintNFT() public {
+        uint256 tokenId = customNFT.mintNFT(
+            testAddress,
+            "https://example.com/token"
         );
-        assertTrue(newCollection != address(0));
+        assertEq(tokenId, 0);
+        assertEq(customNFT.tokenURI(0), "https://example.com/token");
+    }
+
+    function testFailMintNFTByNonOwner() public {
+        vm.prank(address(0xBEEF));
+        customNFT.mintNFT(address(0xBEEF), "https://example.com/token");
     }
 }
