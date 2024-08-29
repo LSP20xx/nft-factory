@@ -13,10 +13,7 @@ contract CustomNFTTest is Test {
     }
 
     function testMintNFT() public {
-        uint256 tokenId = customNFT.mintNFT(
-            testAddress,
-            "https://example.com/token"
-        );
+        uint256 tokenId = customNFT.mintNFT(testAddress, "https://example.com/token");
         assertEq(tokenId, 0);
         assertEq(customNFT.tokenURI(0), "https://example.com/token");
     }

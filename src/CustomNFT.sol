@@ -8,18 +8,11 @@ contract CustomNFT is ERC721, Ownable {
     uint256 public tokenCounter;
     mapping(uint256 => string) private _tokenURIs;
 
-    constructor(
-        string memory name,
-        string memory symbol,
-        address owner
-    ) ERC721(name, symbol) Ownable(owner) {
+    constructor(string memory name, string memory symbol, address owner) ERC721(name, symbol) Ownable(owner) {
         tokenCounter = 0;
     }
 
-    function mintNFT(
-        address recipient,
-        string memory uri
-    ) public onlyOwner returns (uint256) {
+    function mintNFT(address recipient, string memory uri) public onlyOwner returns (uint256) {
         uint256 newTokenId = tokenCounter;
         _safeMint(recipient, newTokenId);
         _setTokenURI(newTokenId, uri);
@@ -31,13 +24,8 @@ contract CustomNFT is ERC721, Ownable {
         _tokenURIs[tokenId] = uri;
     }
 
-    function tokenURI(
-        uint256 tokenId
-    ) public view override returns (string memory) {
-        require(
-            ownerOf(tokenId) != address(0),
-            "ERC721Metadata: URI query for nonexistent token"
-        );
+    function tokenURI(uint256 tokenId) public view override returns (string memory) {
+        require(ownerOf(tokenId) != address(0), "ERC721Metadata: URI query for nonexistent token");
         return _tokenURIs[tokenId];
     }
 }
